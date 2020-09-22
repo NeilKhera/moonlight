@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 Image.MAX_IMAGE_PIXELS = None
-heightmap = np.array(Image.open('test.png'), dtype='int16')
+dem = Image.open('moon.png')
+heightmap = np.array(dem, dtype='int16')
+heightmap = np.array(heightmap / 2, dtype='float32')
 lightmap = np.zeros(heightmap.shape)
-scale = 1
+scale = 5
 
-direction = (1, 1)
-inclination = 10
+direction = (-0.985, -0.174)
+inclination = 15
 
 line_stack = []
 
@@ -47,14 +49,11 @@ def sunlit():
     for col in range(heightmap.shape[1]):
       start_point = (row, col)
 
-      if col == 0:
-        print(heightmap[row])
-
       if (lightmap[row, col] != -50 and lightmap[row, col] != -10):
         for xy in lineWalk(row, col):
           horizontal_displacement = math.sqrt((xy[0] - start_point[0]) ** 2 + (xy[1] - start_point[1]) ** 2) * scale
           vertical_displacement = heightmap[xy[0], xy[1]] - heightmap[start_point[0], start_point[1]]
-          
+
           if vertical_displacement > (tan_incl * horizontal_displacement):
             clearStack()
             start_point = xy
@@ -65,12 +64,8 @@ def sunlit():
         line_stack.clear()
 
 if __name__ == "__main__":
-
+  plt.imshow(heightmap)
+  plt.show()
   sunlit()
-  print(lightmap)
   plt.imshow(lightmap)
   plt.show()
-
-  #from mayavi import mlab
-  #mlab.surf(heightmap / 10)
-  #mlab.show()
