@@ -58,7 +58,7 @@ if __name__ == "__main__":
   dem_scale = 5
   dem_data = (dem_heightmap, dem_scale)
 
-  sun_direction = (-1, 0)
+  sun_direction = (0.866, -0.5)
   sun_inclination = 15
   sun_position = (sun_direction, sun_inclination)
 
